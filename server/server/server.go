@@ -7,6 +7,7 @@ import (
 
 	pb "github.com/suradidchao/my-grpc/book"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 type BookServer struct {
@@ -17,7 +18,7 @@ type BookServer struct {
 func (s *BookServer) GetBookById(ctx context.Context, req *pb.Request) (*pb.Response, error) {
 	fmt.Println("Book id: ", req.Id)
 	response := pb.Response{
-		Id:     123,
+		Id:     req.Id,
 		Title:  "The subtle art of not giving a fuck",
 		Author: "Mark Manson",
 		Pages:  450,
@@ -33,6 +34,7 @@ func (s *BookServer) Start() error {
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterBookServer(grpcServer, s)
+	reflection.Register(grpcServer)
 
 	err = grpcServer.Serve(lis)
 	if err != nil {

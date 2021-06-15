@@ -23,7 +23,7 @@ func main() {
 	defer cancel()
 
 	request := pb.Request{
-		Id: 5432,
+		Id: 12345,
 	}
 
 	response, err := client.GetBookById(ctx, &request)
